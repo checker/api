@@ -1,0 +1,15 @@
+# Node Dependencies
+node_modules/
+
+# Useless fiels
+.DS_Store
+
+# Editor Configurations
+.idea/
+.vscode/
+.atom/
+
+# Private Configuration Variables
+configs/twitter.json
+configs/instagram.json
+configs/firebase.json
