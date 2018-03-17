@@ -9,7 +9,7 @@ function CheckTwitter(service, word, res) {
    var client = new Twitter(config);
 
    client.get('users/show', {screen_name: word, include_entities: false})
-         .then(results = (r) => {
+         .then((r) => {
             var milliseconds = new Date().getTime();
             var status = ('screen_name' in r) ? "taken" : "available";
             res.json({ service: service, username: word, status: status, timestamp: milliseconds });

@@ -13,3 +13,4 @@ node_modules/
 configs/twitter.json
 configs/instagram.json
 configs/firebase.json
+configs/twitch.json

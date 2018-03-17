@@ -1,19 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const apicache = require('apicache');
+const redis = require('redis');
 
 const CheckTwitter = require('../libs/Twitter');
 const CheckInstagram = require('../libs/Instagram');
 const CheckSteam = require('../libs/Steam');
 const CheckMinecraft = require('../libs/Minecraft');
 const CheckYoutube = require('../libs/Youtube');
+const CheckMixer = require('../libs/Mixer');
+const CheckTwitch = require('../libs/Twitch');
+
+let cacheWithRedis = apicache.options({ redisClient: redis.createClient() }).middleware;
 
 /* GET root api endpoint */
 router.get('/', function(req, res, next) {
   res.send('this is the root api endpoint');
 });
 
-router.get('/check/:service/:word', function(req, res, next) {
+router.get('/check/:service/:word', cacheWithRedis('6 hours'), function(req, res, next) {
    var service = req.params.service;
    var word = req.params.word;
 
@@ -36,6 +42,12 @@ router.get('/check/:service/:word', function(req, res, next) {
          break;
       case "youtube":
          CheckYoutube(service, word, res);
+         break;
+      case "mixer":
+         CheckMixer(service, word, res);
+         break;
+      case "twitch":
+         CheckTwitch(service, word, res);
          break;
    }
 });
