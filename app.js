@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const router = express.Router();
 
 const bodyParser = require('body-parser');
 const axios = require('axios');
@@ -14,17 +15,18 @@ const CheckYoutube = require('./libs/Youtube');
 const CheckMixer = require('./libs/Mixer');
 const CheckTwitch = require('./libs/Twitch');
 
+app.use(router);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 let cacheWithRedis = apicache.options({ redisClient: redis.createClient() }).middleware;
 
 /* GET root api endpoint */
-app.get('/', function(req, res, next) {
+router.get('/', function(req, res, next) {
   res.send('this is the root api endpoint');
 });
 
-app.get('/check/:service/:word', cacheWithRedis('6 hours'), function(req, res, next) {
+router.get('/check/:service/:word', cacheWithRedis('6 hours'), function(req, res, next) {
    var service = req.params.service;
    var word = req.params.word;
 
