@@ -21,7 +21,7 @@ function CheckInstagram(service, word, res) {
                "Referer": "https://www.instagram.com",
                "x-csrftoken": token,
                "Cookie": cookie,
-               "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.162 Safari/537.36",
+               "User-Agent": faker.internet.userAgent,
                "Content-Type": "application/x-www-form-urlencoded; charset=utf-8"
             }
          }

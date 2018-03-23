@@ -3,6 +3,7 @@ const app = express();
 const router = express.Router();
 
 const bodyParser = require('body-parser');
+const timeout = require('connect-timeout');
 const axios = require('axios');
 const apicache = require('apicache');
 const redis = require('redis');
@@ -16,8 +17,10 @@ const CheckMixer = require('./libs/Mixer');
 const CheckTwitch = require('./libs/Twitch');
 
 app.use(router);
+app.use(timeout('2s'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(haltOnTimedout);
 
 let cacheWithRedis = apicache.options({ redisClient: redis.createClient() }).middleware;
 
@@ -58,6 +61,10 @@ router.get('/check/:service/:word', cacheWithRedis('6 hours'), function(req, res
          break;
    }
 });
+
+function haltOnTimedout (req, res, next) {
+  if (!req.timedout) next()
+}
 
 app.listen(8080, 'localhost');
 
