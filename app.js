@@ -17,7 +17,7 @@ const CheckMixer = require('./libs/Mixer');
 const CheckTwitch = require('./libs/Twitch');
 
 app.use(router);
-app.use(timeout('2s'));
+app.use(timeout('5s'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(haltOnTimedout);
