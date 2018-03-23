@@ -8,7 +8,7 @@ function CheckMixer(service, word, res) {
 
    var status = "";
 
-   axios.get(url, config).then(function (obj) {
+   axios.get(url).then(function (obj) {
       var milliseconds = new Date().getTime();
       status = ('statusCode' in obj.data) ? "available" : "taken";
       res.json({ service: service, username: word, status: status, timestamp: milliseconds });
