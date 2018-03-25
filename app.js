@@ -35,11 +35,16 @@ function checkAuthKey(req, res, next) {
 let cacheWithRedis = apicache.options({ redisClient: redis.createClient() }).middleware;
 
 /* GET root api endpoint */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   res.send('this is the root api endpoint');
 });
 
-router.get('/check/:service/:word', [checkAuthKey, cacheWithRedis('6 hours')], function(req, res, next) {
+router.get('/check/services', function(req, res) {
+  var services = require('./services.json');
+  res.json(services);
+});
+
+router.get('/check/:service/:word', [checkAuthKey, cacheWithRedis('6 hours')], function(req, res) {
    var service = req.params.service;
    var word = req.params.word;
 

@@ -1,0 +1,10 @@
+{
+   "services": [
+      "twitter",
+      "instagram",
+      "steamid",
+      "steamgroup",
+      "mixer",
+      "youtube"
+   ]
+}
