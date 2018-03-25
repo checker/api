@@ -13,3 +13,6 @@ node_modules/
 configs/twitter.json
 configs/instagram.json
 configs/twitch.json
+
+# Private API Keys
+apikeys.json
