@@ -8,6 +8,7 @@ const axios = require('axios');
 const apicache = require('apicache');
 const redis = require('redis');
 const fs = require('fs');
+const path = require('path');
 
 const CheckTwitter = require('./libs/Twitter');
 const CheckInstagram = require('./libs/Instagram');
@@ -36,7 +37,7 @@ let cacheWithRedis = apicache.options({ redisClient: redis.createClient() }).mid
 
 /* GET root api endpoint */
 router.get('/', function(req, res) {
-  res.send('this is the root api endpoint');
+  res.sendFile(path.join(__dirname + '/docs.html'));
 });
 
 router.get('/check/services', function(req, res) {
