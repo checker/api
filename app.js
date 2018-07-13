@@ -45,7 +45,7 @@ router.get('/check/services', function(req, res) {
   res.json(services);
 });
 
-router.get('/check/:service/:word', [checkAuthKey, cacheWithRedis('6 hours')], function(req, res) {
+router.get('/check/:service/:word', [cacheWithRedis('6 hours')], function(req, res) {
    var service = req.params.service;
    var word = req.params.word;
 
