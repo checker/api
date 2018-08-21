@@ -41,7 +41,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/check/services', function(req, res) {
-  var simple = {};
+  var simple = {"services":[]};
   var advanced = require('./services.json');
   for (var key in advanced.services) {
   	simple.services.push(advanced.services[key].slug)
