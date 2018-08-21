@@ -1,10 +1,113 @@
 {
-   "services": [
-      "twitter",
-      "instagram",
-      "steamid",
-      "steamgroup",
-      "mixer",
-      "youtube"
-   ]
+  "services": [
+    {
+      "name": "Twitter",
+      "slug": "twitter",
+      "endpoints": {
+        "baseUrl": "https://www.twitter.com",
+        "profileUrl": "https://twitter.com/%name%",
+        "requestUrl": "https://api.twitter.com/i/users/username_available.json?username=%name%"
+      },
+      "httpMethod": "GET",
+      "usernameCriteria": {
+        "minLength": 5,
+        "maxLength": 15,
+        "allowedUsernamePattern": "([a-zA-Z0-9_]+)",
+        "prohibitedWords": [
+          "twitter",
+          "admin"
+        ]
+      }
+    },
+    {
+      "name": "Instagram",
+      "slug": "instagram",
+      "endpoints": {
+        "baseUrl": "https://www.instagram.com",
+        "profileUrl": "https://instagram.com/%name%",
+        "requestUrl": "https://instagram.com/accounts/web_create_ajax/attempt/"
+      },
+      "httpMethod": "POST",
+      "usernameCriteria": {
+        "minLength": 1,
+        "maxLength": 30,
+        "allowedUsernamePattern": "([a-zA-Z0-9_\\.]+)",
+        "prohibitedWords": []
+      }
+    },
+    {
+      "name": "Steam ID",
+      "slug": "steamid",
+      "endpoints": {
+        "baseUrl": "https://www.steamcommunity.com",
+        "profileUrl": "https://steamcommunity.com/id/%name%",
+        "requestUrl": "https://steamcommunity.com/id/%name%"
+      },
+      "httpMethod": "GET",
+      "usernameCriteria": {
+        "minLength": 1,
+        "maxLength": 31,
+        "allowedUsernamePattern": "([a-zA-Z0-9_]+)",
+        "prohibitedWords": [
+          "valve",
+          "support"
+        ]
+      }
+    },
+    {
+      "name": "Steam Group",
+      "slug": "steamgroup",
+      "endpoints": {
+        "baseUrl": "https://www.steamcommunity.com",
+        "profileUrl": "https://steamcommunity.com/groups/%name%",
+        "requestUrl": "https://steamcommunity.com/groups/%name%"
+      },
+      "httpMethod": "GET",
+      "usernameCriteria": {
+        "minLength": 1,
+        "maxLength": 31,
+        "allowedUsernamePattern": "([a-zA-Z0-9_]+)",
+        "prohibitedWords": [
+          "valve",
+          "support"
+        ]
+      }
+    },
+    {
+      "name": "Mixer",
+      "slug": "mixer",
+      "endpoints": {
+        "baseUrl": "https://www.mixer.com",
+        "profileUrl": "https://mixer.com/api/v1/channels/%name%",
+        "requestUrl": "https://mixer.com/api/v1/channels/%name%"
+      },
+      "httpMethod": "GET",
+      "usernameCriteria": {
+        "minLength": 1,
+        "maxLength": 31,
+        "allowedUsernamePattern": "([a-zA-Z0-9]+)",
+        "prohibitedWords": []
+      }
+    },
+    {
+      "name": "YouTube",
+      "slug": "youtube",
+      "endpoints": {
+        "baseUrl": "https://www.youtube.com/",
+        "profileUrl": "https://www.youtube.com/user/%name%",
+        "requestUrl": "https://www.youtube.com/c/%name%"
+      },
+      "httpMethod": "GET",
+      "usernameCriteria": {
+        "minLength": 4,
+        "maxLength": 20,
+        "allowedUsernamePattern": "([a-zA-Z0-9]+)",
+        "prohibitedWords": [
+          "youtube",
+          "google",
+          "admin"
+        ]
+      }
+    }
+  ]
 }

@@ -41,8 +41,17 @@ router.get('/', function(req, res) {
 });
 
 router.get('/check/services', function(req, res) {
-  var services = require('./services.json');
-  res.json(services);
+  var simple = {};
+  var advanced = require('./services.json');
+  for (var key in advanced.services) {
+  	simple.services.push(advanced.services[key].slug)
+  }
+  res.json(simple);
+});
+
+router.get('/check/services/details', function(req, res) {
+  var obj = require('./services.json');
+  res.json(obj);
 });
 
 router.get('/check/:service/:word', [cacheWithRedis('6 hours')], function(req, res) {
