@@ -1,6 +1,7 @@
 {
   "services": [
     {
+      "id": 1,
       "name": "Twitter",
       "slug": "twitter",
       "endpoints": {
@@ -20,6 +21,7 @@
       }
     },
     {
+      "id": 2,
       "name": "Instagram",
       "slug": "instagram",
       "endpoints": {
@@ -36,6 +38,7 @@
       }
     },
     {
+      "id": 3,
       "name": "Steam ID",
       "slug": "steamid",
       "endpoints": {
@@ -55,6 +58,7 @@
       }
     },
     {
+      "id": 4,
       "name": "Steam Group",
       "slug": "steamgroup",
       "endpoints": {
@@ -74,6 +78,7 @@
       }
     },
     {
+      "id": 5,
       "name": "Mixer",
       "slug": "mixer",
       "endpoints": {
@@ -90,6 +95,7 @@
       }
     },
     {
+      "id": 6,
       "name": "YouTube",
       "slug": "youtube",
       "endpoints": {
