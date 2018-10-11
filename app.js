@@ -16,6 +16,14 @@ const CheckSteam = require('./libs/Steam');
 const CheckYoutube = require('./libs/Youtube');
 const CheckMixer = require('./libs/Mixer');
 
+var options = {
+ setHeaders: function (res, path, stat) {
+    res.set('Access-Control-Allow-Origin', '*')
+ } 
+}
+
+app.use(express.static('public', options))
+
 app.use(router);
 app.use(timeout('5s'));
 app.use(bodyParser.json());
