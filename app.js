@@ -16,14 +16,6 @@ const CheckSteam = require('./libs/Steam');
 const CheckYoutube = require('./libs/Youtube');
 const CheckMixer = require('./libs/Mixer');
 
-var options = {
- setHeaders: function (res, path, stat) {
-    res.set('Access-Control-Allow-Origin', '*')
- } 
-}
-
-app.use(express.static('public', options))
-
 app.use(router);
 app.use(timeout('5s'));
 app.use(bodyParser.json());
@@ -43,12 +35,17 @@ function checkAuthKey(req, res, next) {
 
 let cacheWithRedis = apicache.options({ redisClient: redis.createClient() }).middleware;
 
+function noCors(req, res, next) {
+  res.append('Access-Control-Allow-Origin', '*')
+  next()
+}
+
 /* GET root api endpoint */
 router.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/docs.html'));
 });
 
-router.get('/check/services', function(req, res) {
+router.get('/check/services', [noCors()], function(req, res) {
   var simple = {"services":[]};
   var advanced = require('./services.json');
   for (var key in advanced.services) {
@@ -57,12 +54,12 @@ router.get('/check/services', function(req, res) {
   res.json(simple);
 });
 
-router.get('/check/services/details', function(req, res) {
+router.get('/check/services/details', [noCors()], function(req, res) {
   var obj = require('./services.json');
   res.json(obj);
 });
 
-router.get('/check/:service/:word', [cacheWithRedis('6 hours')], function(req, res) {
+router.get('/check/:service/:word', [cacheWithRedis('6 hours'), noCors()], function(req, res) {
    var service = req.params.service;
    var word = req.params.word;
 
