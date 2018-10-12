@@ -16,3 +16,6 @@ configs/twitch.json
 
 # Private API Keys
 apikeys.json
+
+# temp files
+tmp/
