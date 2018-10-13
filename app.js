@@ -48,7 +48,7 @@ router.get('/', function(req, res) {
 
 router.get('/check/services', function(req, res) {
   var simple = {"services":[]};
-  var advanced = fs.readFileSync(path.join(__dirname, 'services.json'));
+  var advanced = require('services.json');
   for (var key in advanced.services) {
   	simple.services.push(advanced.services[key].slug)
   }
@@ -57,7 +57,7 @@ router.get('/check/services', function(req, res) {
 });
 
 router.get('/check/services/details', function(req, res) {
-  var json = fs.readFileSync(path.join(__dirname, 'services.json'));
+  var json = require('services.json');
   res.type('json');
   res.json(200, json);
 });
