@@ -3,6 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 
 function CheckMixer(service, word, res) {
+   res.type('json');
 
    const url = `https://mixer.com/api/v1/channels/${word}`;
 

@@ -3,7 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 
 function CheckYoutube(service, word, res) {
-
+    res.type('json');
    const baseUrl = `https://www.youtube.com/${word}`;
    const userUrl = `https://www.youtube.com/user/${word}`;
    const chanUrl = `https://www.youtube.com/c/${word}`;

@@ -4,7 +4,7 @@ const axios = require('axios');
 const Twitter = require('twitter-lite');
 
 function CheckTwitter(service, word, res) {
-
+      res.type('json');
    var config = require('../configs/twitter.json');
    var client = new Twitter(config);
 

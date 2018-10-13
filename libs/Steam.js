@@ -4,7 +4,7 @@ const axios = require('axios');
 const cheerio = require('cheerio');
 
 function CheckSteam(service, word, res) {
-
+   res.type('json');
    var url = "";
 
    if (service == "steamid") {

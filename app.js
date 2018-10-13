@@ -23,6 +23,10 @@ app.use(timeout('5s'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(haltOnTimedout);
+app.use(function (req, res, next) {
+  res.header('Content-Type', 'application/json');
+  next();
+});
 
 function checkAuthKey(req, res, next) {
   var keys = require('./apikeys.json');
@@ -44,16 +48,18 @@ router.get('/', function(req, res) {
 
 router.get('/check/services', function(req, res) {
   var simple = {"services":[]};
-  var advanced = require('./services.json');
+  var advanced = fs.readFileSync(path.join(__dirname, 'services.json'));
   for (var key in advanced.services) {
   	simple.services.push(advanced.services[key].slug)
   }
-  res.json(simple);
+  res.type('json');
+  res.json(200, simple);
 });
 
 router.get('/check/services/details', function(req, res) {
-  var obj = require('./services.json');
-  res.json(obj);
+  var json = fs.readFileSync(path.join(__dirname, 'services.json'));
+  res.type('json');
+  res.json(200, json);
 });
 
 router.get('/check/:service/:word', [cacheWithRedis('6 hours')], function(req, res) {

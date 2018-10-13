@@ -4,7 +4,8 @@ const axios = require('axios');
 const faker = require('faker');
 
 function CheckInstagram(service, word, res) {
-
+      res.type('json');
+      
    var token = "";
    var mid = "";
    var cookie = "";

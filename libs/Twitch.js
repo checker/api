@@ -3,7 +3,7 @@ const router = express.Router();
 const twitch = require('twitch-api-v5');
 
 function CheckTwitch(service, word, res) {
-
+   res.type('json');
    var config = require('../configs/twitch.json');
 
    twitch.clientID = config.clientId;

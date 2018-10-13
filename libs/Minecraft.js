@@ -4,11 +4,12 @@ const axios = require('axios');
 const faker = require('faker');
 
 function CheckMinecraft(service, word, res) {
+      res.type('json');
 
-   var url = `https://api.mojang.com/users/profiles/minecraft/${word}`;
-   var status = "";
+      var url = `https://api.mojang.com/users/profiles/minecraft/${word}`;
+      var status = "";
 
-   axios.get(url, null, { "headers": { "User-Agent": faker.internet.userAgent }})
+      axios.get(url, null, { "headers": { "User-Agent": faker.internet.userAgent }})
       .then(results = (r) => {
          var milliseconds = new Date().getTime();
          try {
