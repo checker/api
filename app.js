@@ -65,7 +65,7 @@ router.get('/check/:service', function(req, res) {
   var json = {};
   for (var key in advanced.services) {
   	if (service === advanced.services[key].slug) {
-      json = advanced.services[key].slug;
+      json = advanced.services[key];
       break;
     }
   }
