@@ -28,6 +28,11 @@ app.use(function (req, res, next) {
   next();
 });
 
+function goToDocs(req, res) {
+  const targetUrl = "https://app.swaggerhub.com/apis-docs/CrocBuzz/penguin-api/";
+  res.redirect(targetUrl);
+}
+
 function checkAuthKey(req, res, next) {
   var keys = require('./apikeys.json');
   var appkey = req.get('og-apikey');
@@ -42,9 +47,7 @@ function checkAuthKey(req, res, next) {
 let cacheWithRedis = apicache.options({ redisClient: redis.createClient() }).middleware;
 
 /* GET root api endpoint */
-router.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname + '/docs.html'));
-});
+router.get('/', goToDocs);
 
 router.get('/check/services', function(req, res) {
   var simple = {"services":[]};
@@ -54,6 +57,20 @@ router.get('/check/services', function(req, res) {
   }
   res.type('json');
   res.json(200, simple);
+});
+
+router.get('/check/:service', function(req, res) {
+  var service = req.params.service;
+  var advanced = require('./services.json');
+  var json = {};
+  for (var key in advanced.services) {
+  	if (service === advanced.services[key].slug) {
+      json = advanced.services[key].slug;
+      break;
+    }
+  }
+  res.type('json');
+  res.json(200, json);
 });
 
 router.get('/check/services/details', function(req, res) {
