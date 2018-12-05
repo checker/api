@@ -1,3 +1,3 @@
-# OGCheckr API
+# Penguin API
 
-The official REST API for OGCheckr applications
+The official REST API for the currently-in-development Penguin iOS app.
