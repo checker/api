@@ -46,7 +46,7 @@ function checkAuthKey(req, res, next) {
   }
 }
 
-let cacheWithRedis = apicache.options({ redisClient: redis.createClient() }).middleware;
+let cacheWithRedis = apicache.options({ redisClient: redis.createClient(process.env.REDIS_URL) }).middleware;
 
 /* GET root api endpoint */
 router.get('/', goToDocs);
