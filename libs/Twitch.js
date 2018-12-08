@@ -4,9 +4,8 @@ const twitch = require('twitch-api-v5');
 
 function CheckTwitch(service, word, res) {
    res.type('json');
-   var config = require('../configs/twitch.json');
 
-   twitch.clientID = config.clientId;
+   twitch.clientID = process.env.TWITCH_CLIENT_ID;
 
    twitch.users.usersByName({"users": [word]}, function(error, response) {
       if(error) {

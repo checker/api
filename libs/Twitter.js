@@ -5,7 +5,12 @@ const Twitter = require('twitter-lite');
 
 function CheckTwitter(service, word, res) {
       res.type('json');
-   var config = require('../configs/twitter.json');
+   var config = {
+      "consumer_key": process.env.TWTR_CONSUMER_KEY,
+      "consumer_secret": process.env.TWTR_CONSUMER_SECRET,
+      "access_token_key": process.env.TWTR_ACCESS_TOKEN_KEY,
+      "access_token_secret": process.env.TWTR_ACCESS_TOKEN_SECRET
+   };
    var client = new Twitter(config);
 
    client.get('users/show', {screen_name: word, include_entities: false})

@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -109,6 +111,6 @@ function haltOnTimedout (req, res, next) {
   if (!req.timedout) next()
 }
 
-app.listen(8080, 'localhost');
+app.listen(process.env.PORT || 5000);
 
 module.exports = app;
