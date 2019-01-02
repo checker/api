@@ -1,7 +1,7 @@
 # Node Dependencies
 node_modules/
 
-# Useless fiels
+# OSX Files
 .DS_Store
 
 # Editor Configurations
@@ -18,3 +18,7 @@ apikeys.json
 
 # temp files
 tmp/
+
+# Omit log files
+
+*.log
