@@ -4,6 +4,7 @@
       "id": 1,
       "name": "Twitter",
       "slug": "twitter",
+      "libPath": "libs/Twitter.js",
       "endpoints": {
         "baseUrl": "https://www.twitter.com",
         "profileUrl": "https://twitter.com/%name%",
@@ -24,6 +25,7 @@
       "id": 2,
       "name": "Instagram",
       "slug": "instagram",
+      "libPath": "libs/Instagram.js",
       "endpoints": {
         "baseUrl": "https://www.instagram.com",
         "profileUrl": "https://instagram.com/%name%",
@@ -41,6 +43,7 @@
       "id": 3,
       "name": "Steam ID",
       "slug": "steamid",
+      "libPath": "libs/Steam.js",
       "endpoints": {
         "baseUrl": "https://www.steamcommunity.com",
         "profileUrl": "https://steamcommunity.com/id/%name%",
@@ -61,6 +64,7 @@
       "id": 4,
       "name": "Steam Group",
       "slug": "steamgroup",
+      "libPath": "libs/SteamGroup.js",
       "endpoints": {
         "baseUrl": "https://www.steamcommunity.com",
         "profileUrl": "https://steamcommunity.com/groups/%name%",
@@ -81,6 +85,7 @@
       "id": 5,
       "name": "Mixer",
       "slug": "mixer",
+      "libPath": "libs/Mixer.js",
       "endpoints": {
         "baseUrl": "https://www.mixer.com",
         "profileUrl": "https://mixer.com/api/v1/channels/%name%",
@@ -98,6 +103,7 @@
       "id": 6,
       "name": "YouTube",
       "slug": "youtube",
+      "libPath": "libs/Youtube.js",
       "endpoints": {
         "baseUrl": "https://www.youtube.com/",
         "profileUrl": "https://www.youtube.com/user/%name%",

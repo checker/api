@@ -1,11 +1,7 @@
-const express = require('express');
-const router = express.Router();
 const axios = require('axios');
 const faker = require('faker');
 
-function CheckMinecraft(service, word, res) {
-      res.type('json');
-
+const check = (word, callback) => {
       var url = `https://api.mojang.com/users/profiles/minecraft/${word}`;
       var status = "";
 
@@ -18,10 +14,10 @@ function CheckMinecraft(service, word, res) {
          } catch(err) {
             status = "available";
          }
-         res.json({ service: service, username: word, status: status, timestamp: milliseconds });
+         callback(status, milliseconds)
       })
       .catch(console.error)
 
 }
 
-module.exports = CheckMinecraft;
+module.exports = check;
