@@ -1,9 +1,6 @@
-const express = require('express');
-const router = express.Router();
 const axios = require('axios');
 
-function CheckYoutube(service, word, res) {
-    res.type('json');
+const check = (word, callback) => {
    const baseUrl = `https://www.youtube.com/${word}`;
    const userUrl = `https://www.youtube.com/user/${word}`;
    const chanUrl = `https://www.youtube.com/c/${word}`;
@@ -43,7 +40,6 @@ function CheckYoutube(service, word, res) {
       if (codes === undefined || codes.length == 0) {
          status = "available";
       } else {
-         console.log(codes);
          var code = codes.reduce(function(a, b, c){ return (a === b) ? a : c });
    
          switch (code) {
@@ -62,10 +58,10 @@ function CheckYoutube(service, word, res) {
          }
       }
            
-      res.json({ service: service, username: word, statusBreakdown: codeObj, status: status, timestamp: milliseconds });
+      callback(status, milliseconds, codeObj)
       
    }).catch(console.error);
 
 }
 
-module.exports = CheckYoutube;
+module.exports = check;

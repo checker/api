@@ -1,10 +1,6 @@
-const express = require('express');
-const router = express.Router();
 const twitch = require('twitch-api-v5');
 
-function CheckTwitch(service, word, res) {
-   res.type('json');
-
+const check = (word, callback) => {
    twitch.clientID = process.env.TWITCH_CLIENT_ID;
 
    twitch.users.usersByName({"users": [word]}, function(error, response) {
@@ -13,9 +9,9 @@ function CheckTwitch(service, word, res) {
       } else {
          var status = (response['_total'] == 1) ? "taken" : "available";
          var milliseconds = new Date().getTime();
-         res.json({ service: service, username: word, status: status, timestamp: milliseconds });
+         callback(status, milliseconds)
       }
    });
 }
 
-module.exports = CheckTwitch;
+module.exports = check;

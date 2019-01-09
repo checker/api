@@ -7,17 +7,15 @@ const router = express.Router();
 
 const bodyParser = require('body-parser');
 const timeout = require('connect-timeout');
-const axios = require('axios');
 const apicache = require('apicache');
 const redis = require('redis');
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs")
 
-const CheckTwitter = require('./libs/Twitter');
-const CheckInstagram = require('./libs/Instagram');
-const CheckSteam = require('./libs/Steam');
-const CheckYoutube = require('./libs/Youtube');
-const CheckMixer = require('./libs/Mixer');
+// Load services.json
+const advanced = require('./services.json');
+
+// Used for storing active modules
+let modules = []
 
 app.use(cors())
 app.use(router);
@@ -27,8 +25,19 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(haltOnTimedout);
 app.use(function (req, res, next) {
   res.header('Content-Type', 'application/json');
+  res.header('x-powered-by', 'github.com/checker')
   next();
 });
+
+const loadLibs = (callback) => {
+  // This isn't great, but it works.
+  advanced["services"].forEach(service => {
+    console.log(`[BOOTSTRAP] Bootstrapping ${service.name} (${service.slug})`)
+    modules[service.slug] = {"manifest": service, "instance": require(`./${service.libPath}`)}
+  })
+  console.log(`[BOOTSTRAP] Module start finished, loaded ${modules.length} modules.`)
+  callback()
+}
 
 function goToDocs(req, res) {
   const targetUrl = "https://app.swaggerhub.com/apis-docs/CrocBuzz/penguin-api/";
@@ -42,6 +51,7 @@ function checkAuthKey(req, res, next) {
   if (keys.authorized.includes(appkey)) {
     next()
   } else {
+    res.status(401) // http: UNAUTHORIZED
     res.json({"status": "unauthorized"});
   }
 }
@@ -52,18 +62,16 @@ let cacheWithRedis = apicache.options({ redisClient: redis.createClient(process.
 router.get('/', goToDocs);
 
 router.get('/check/services', function(req, res) {
+  // Note: see APICHANGES.md for possible changes
   var simple = {"services":[]};
-  var advanced = require('./services.json');
   for (var key in advanced.services) {
   	simple.services.push(advanced.services[key].slug)
   }
-  res.type('json');
-  res.json(200, simple);
+  res.json(simple);
 });
 
 router.get('/check/:service', function(req, res) {
   var service = req.params.service;
-  var advanced = require('./services.json');
   var json = {};
   for (var key in advanced.services) {
   	if (service === advanced.services[key].slug) {
@@ -71,46 +79,45 @@ router.get('/check/:service', function(req, res) {
       break;
     }
   }
-  res.type('json');
-  res.json(200, json);
+  res.json(json)
 });
 
 router.get('/check/services/details', function(req, res) {
   var json = require('./services.json');
-  res.type('json');
-  res.json(200, json);
+  res.json(json)
 });
 
 router.get('/check/:service/:word', [cacheWithRedis('6 hours')], function(req, res) {
-   var service = req.params.service;
-   var word = req.params.word;
-
-   switch (service) {
-      case "twitter":
-         CheckTwitter(service, word, res);
-         break;
-      case "instagram":
-         CheckInstagram(service, word, res);
-         break;
-      case "steamid":
-         CheckSteam(service, word, res);
-         break;
-      case "steamgroup":
-         CheckSteam(service, word, res);
-         break;
-      case "youtube":
-         CheckYoutube(service, word, res);
-         break;
-      case "mixer":
-         CheckMixer(service, word, res);
-         break;
-   }
+  var service = req.params.service;
+  var word = req.params.word;
+  if (modules[service] == undefined) {
+    res.status(400)
+    res.json({"error": "INVALID_SERVICE", "message": "Invalid service selected, please see /check/services for a list."})
+  }else {
+    // Seemingly valid service, request data on 'word':
+    modules[service].instance(word, (status, timestamp, statusBreakdown) => {
+      // Result will be an array containing [status, epoch, extra information]
+      const json = {
+        "service": modules[service]["manifest"]["slug"], // Use the slug, not what the user sent
+        "username": word, // Return what the user sent, I'm lazy.
+        "status": status, // Return the status "available"/"taken"/"unknown"
+        "timestamp": timestamp, // Return an MS epoch time
+        "statusBreakdown": statusBreakdown || undefined // Return the breakdown (or undefined)
+      }
+      res.json(json)
+    })
+  }
 });
 
 function haltOnTimedout (req, res, next) {
   if (!req.timedout) next()
 }
 
-app.listen(process.env.PORT || 5000);
+loadLibs(() => {
+  // Start server when modules have loaded
+  app.listen(process.env.PORT || 5000, () => {
+    console.log(`[SERVER] Started listening on ${process.env.PORT || 5000}`)
+  });
+})
 
 module.exports = app;

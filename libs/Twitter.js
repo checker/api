@@ -1,10 +1,6 @@
-const express = require('express');
-const router = express.Router();
-const axios = require('axios');
 const Twitter = require('twitter-lite');
 
-function CheckTwitter(service, word, res) {
-      res.type('json');
+const check = (word, callback) => {
    var config = {
       "consumer_key": process.env.TWTR_CONSUMER_KEY,
       "consumer_secret": process.env.TWTR_CONSUMER_SECRET,
@@ -17,10 +13,10 @@ function CheckTwitter(service, word, res) {
          .then((r) => {
             var milliseconds = new Date().getTime();
             var status = ('screen_name' in r) ? "taken" : "available";
-            res.json({ service: service, username: word, status: status, timestamp: milliseconds });
+            callback(status, milliseconds)
          })
          .catch(console.error)
 
 }
 
-module.exports = CheckTwitter;
+module.exports = check;
