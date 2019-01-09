@@ -87,7 +87,7 @@ router.get('/check/services/details', function(req, res) {
   res.json(json)
 });
 
-router.get('/check/:service/:word', function(req, res) {
+router.get('/check/:service/:word', [cacheWithRedis('6 hours')], function(req, res) {
   var service = req.params.service;
   var word = req.params.word;
   if (modules[service] == undefined) {
