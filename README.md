@@ -1,3 +1,5 @@
-# Penguin API
+# Social Media Availability REST API
 
-The official REST API for the currently-in-development Penguin iOS app.
+> Quick and painless way to check the availability of a username on a variety of services from your app.
+
+[![Gitter](https://badges.gitter.im/checker/api.svg)](https://gitter.im/checker/api?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
