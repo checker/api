@@ -9,7 +9,6 @@ const bodyParser = require('body-parser');
 const timeout = require('connect-timeout');
 const apicache = require('apicache');
 const redis = require('redis');
-const fs = require("fs")
 
 // Load services.json
 const advanced = require('./services.json');
@@ -25,23 +24,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(haltOnTimedout);
 app.use(function (req, res, next) {
   res.header('Content-Type', 'application/json');
-  res.header('x-powered-by', 'github.com/checker')
+  res.header('x-powered-by', 'checkerapi.com')
   next();
 });
 
 const loadLibs = (callback) => {
   // This isn't great, but it works.
-  advanced["services"].forEach(service => {
+  advanced.forEach(service => {
     console.log(`[BOOTSTRAP] Bootstrapping ${service.name} (${service.slug})`)
     modules[service.slug] = {"manifest": service, "instance": require(`./${service.libPath}`)}
   })
   console.log(`[BOOTSTRAP] Module start finished, loaded ${modules.length} modules.`)
   callback()
-}
-
-function goToDocs(req, res) {
-  const targetUrl = "https://app.swaggerhub.com/apis-docs/CrocBuzz/penguin-api/";
-  res.redirect(targetUrl);
 }
 
 function checkAuthKey(req, res, next) {
@@ -58,33 +52,41 @@ function checkAuthKey(req, res, next) {
 
 let cacheWithRedis = apicache.options({ redisClient: redis.createClient(process.env.REDIS_URL) }).middleware;
 
-/* GET root api endpoint */
-router.get('/', goToDocs);
+router.get('/', function(req, res) {
+  return res.sendFile(__dirname + '/index.html');
+});
+
+router.get('/gh', function(req, res) {
+  return res.redirect("https://github.com/checker/api/");
+});
+
+router.get('/docs', function(req, res) {
+  return res.redirect("https://app.swaggerhub.com/apis/checker/api/");
+});
 
 router.get('/check/services', function(req, res) {
   // Note: see APICHANGES.md for possible changes
-  var simple = {"services":[]};
-  for (var key in advanced.services) {
-  	simple.services.push(advanced.services[key].slug)
+  var simple = [];
+  for (var key in advanced) {
+  	simple.push(advanced[key].slug)
   }
   res.json(simple);
+});
+
+router.get('/check/services/details', function(req, res) {
+  return res.json(advanced)
 });
 
 router.get('/check/:service', function(req, res) {
   var service = req.params.service;
   var json = {};
-  for (var key in advanced.services) {
-  	if (service === advanced.services[key].slug) {
-      json = advanced.services[key];
+  for (var key in advanced) {
+  	if (service === advanced[key].slug) {
+      json = advanced[key];
       break;
     }
   }
-  res.json(json)
-});
-
-router.get('/check/services/details', function(req, res) {
-  var json = require('./services.json');
-  res.json(json)
+  return res.json(json)
 });
 
 router.get('/check/:service/:word', [cacheWithRedis('6 hours')], function(req, res) {
@@ -92,7 +94,7 @@ router.get('/check/:service/:word', [cacheWithRedis('6 hours')], function(req, r
   var word = req.params.word;
   if (modules[service] == undefined) {
     res.status(400)
-    res.json({"error": "INVALID_SERVICE", "message": "Invalid service selected, please see /check/services for a list."})
+    return res.json({"error": "INVALID_SERVICE", "message": "Invalid service selected, please see /check/services for a list."})
   }else {
     // Seemingly valid service, request data on 'word':
     modules[service].instance(word, (status, timestamp, statusBreakdown) => {
@@ -104,7 +106,7 @@ router.get('/check/:service/:word', [cacheWithRedis('6 hours')], function(req, r
         "timestamp": timestamp, // Return an MS epoch time
         "statusBreakdown": statusBreakdown || undefined // Return the breakdown (or undefined)
       }
-      res.json(json)
+      return res.json(json)
     })
   }
 });
