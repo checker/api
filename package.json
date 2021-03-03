@@ -17,7 +17,7 @@
     "faker": "^4.1.0",
     "morgan": "~1.9.1",
     "node-instagram": "^4.1.0",
-    "pug": "2.0.0-beta11",
+    "pug": "3.0.1",
     "redis": "^2.8.0",
     "serve-favicon": "~2.4.5",
     "twitch-api-v5": "^2.0.2",
